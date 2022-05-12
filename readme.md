@@ -4,7 +4,7 @@
 ## プロダクトの紹介
 
 - スケジュールをメモしながら調べたいものの関連キーワードがでてくる（本当はぐるなびでやりたかった・・・）
-- https://nagino1.github.io/memoapi/
+- https://nagino1.github.io/memoapi/memo05.html
 
 ## 工夫した点，こだわった点
 
