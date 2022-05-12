@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>位置情報取得&map表示</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      height: calc(100% - 102px);
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>位置情報取得&Map表示</h1>
+  <div id="map"></div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src='https://www.bing.com/api/maps/mapcontrol?key=AoEVL55aLHlAJqys969x61LHsz4z5PSqEtq_DBsZlkhJle31qfzcZOFIGDGJDxG9' async defer></script>
+
+  <script>
+//マップの情報を入れるための変数
+let map;
+
+  function showError(error) {
+    const errorMessages = [
+      "位置情報が許可されてません",
+      "現在位置を特定できません",
+      "位置情報を取得する前にタイムアウトになりました",
+    ];
+    alert(`error: ${errorMessages[error.code - 1]}`);
+  }
+
+  //オプション　毎回同じ
+  const option = {
+    enableHighAccuracy: true,
+    maximumAge: 20000,
+    timeout: 1000000,
+  };
+
+  //ピンをたてる関数
+  function pushPin(lat, lng, map) {
+      const location = new Microsoft.Maps.Location(lat, lng);
+      const pin = new Microsoft.Maps.Pushpin(location, {
+        color: "navy",
+        visible: true,
+      });
+      map.entities.push(pin);
+    }
+
+  function mapsInit(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      map = new Microsoft.Maps.Map("#map", {
+        center: {
+          latitude: lat,
+          longitude: lng,
+        },
+        zoom: 15,
+      });
+      pushPin(lat, lng, map);
+      generateInfobox(lat, lng, map);
+    }
+
+
+  function mapsInit(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    //地図を表示する処理
+    map = new Microsoft.Maps.Map("#map", {
+      center: {
+        latitude: lat,//緯度（latに数値をいれることもOK）
+        longitude: lng,//経度
+      },
+      zoom: 15,//地図の縮尺（１にすると世界地図。２０だと近所）
+    });
+    pushPin(lat, lng, map);
+  }
+  
+
+//必要なコードの読み込みが全部終わったら表示する
+  window.onload = function(){
+    navigator.geolocation.getCurrentPosition(mapsInit, showError, option)
+
+  }
+
+
+  //sample https://mapapi.org
+
+  </script>
+
+</body>
+
+</html>
